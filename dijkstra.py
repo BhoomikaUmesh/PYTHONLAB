@@ -37,15 +37,15 @@ def find_optimal_route(graph, start, destination):
     route.append(start)
     route.reverse()
     return route
-
-graph={
-   'A':{'B':3, 'C':99, 'D':7, 'E':99},
-   'B':{'A':3, 'C':4, 'D':2, 'E':99},
-   'C':{'B':3, 'C':99, 'D':7, 'E':99},
-   'D':{'A':7, 'B':2, 'C':5, 'E':4},
-   'E':{'A':99, 'B':99, 'C':6, 'D':4}
-}
-'''graph={}
+#Example usage 
+#graph={
+#    'A':{'B':3, 'C':99, 'D':7, 'E':99},
+#   'B':{'A':3, 'C':4, 'D':2, 'E':99},
+#  'C':{'B':3, 'C':99, 'D':7, 'E':99},
+#    'D':{'A':7, 'B':2, 'C':5, 'E':4},
+#    'E':{'A':99, 'B':99, 'C':6, 'D':4}
+#}
+graph={}
 num_nodes=int(input("enter the number of nodes in graph:"))
 for i in range(num_nodes):
     node=input(f"enter node {i+1}:")
@@ -54,7 +54,7 @@ for i in range(num_nodes):
     for j in range(num_neighbors):
         neighbor, weight=input(f"enter the neighbor {j+1} and its weight").split()
         neighbors[neighbor]=int(weight)
-    graph[node]=neighbors  '''  
+    graph[node]=neighbors    
 
 
 '''
@@ -92,13 +92,11 @@ enter the neighbor 4 and its weightD 4
 enter the start location:A
 enter the destination location:E
 Optimal route:  A->B->D->E
-
+'''
 
 
 start_location=input("enter the start location:")
-destination_location=input("enter the destination location:")'''
-start_location='A'
-destination_location='E'
+destination_location=input("enter the destination location:")
 optimal_route=find_optimal_route(graph,start_location,destination_location)
 if optimal_route is None:
     print("No valid route")

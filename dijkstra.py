@@ -57,6 +57,44 @@ for i in range(num_nodes):
     graph[node]=neighbors    
 
 
+'''
+enter the number of nodes in graph:5
+enter node 1:A
+Enter the neighbors for node A: 4
+enter the neighbor 1 and its weightB 3
+enter the neighbor 2 and its weightC 99
+enter the neighbor 3 and its weightD 7
+enter the neighbor 4 and its weightE 99
+enter node 2:B
+Enter the neighbors for node B: 4
+enter the neighbor 1 and its weightA 3
+enter the neighbor 2 and its weightC 4
+enter the neighbor 3 and its weightD 2
+enter the neighbor 4 and its weightE 99
+enter node 3:C
+Enter the neighbors for node C: 4
+enter the neighbor 1 and its weightA 99
+enter the neighbor 2 and its weightB 4
+enter the neighbor 3 and its weightD 5
+enter the neighbor 4 and its weightE 6
+enter node 4:D
+Enter the neighbors for node D: 4
+enter the neighbor 1 and its weightA 7
+enter the neighbor 2 and its weightB 2
+enter the neighbor 3 and its weightC 5
+enter the neighbor 4 and its weightE 4
+enter node 5:E
+Enter the neighbors for node E: 4
+enter the neighbor 1 and its weightA 99
+enter the neighbor 2 and its weightB 99
+enter the neighbor 3 and its weightC 6
+enter the neighbor 4 and its weightD 4
+enter the start location:A
+enter the destination location:E
+Optimal route:  A->B->D->E
+'''
+
+
 start_location=input("enter the start location:")
 destination_location=input("enter the destination location:")
 optimal_route=find_optimal_route(graph,start_location,destination_location)

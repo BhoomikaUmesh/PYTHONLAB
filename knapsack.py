@@ -4,8 +4,7 @@ def knapsack_max_profit(weights,costs,capacity):
   for i in range(1,num_items+1):
     for j in range(1,capacity+1):
       if weights[i-1]<=j:
-        table[i][j] = max(costs[i-1]+table[i-1][j-weights[i-1]],table[i-1][j])
-        
+        table[i][j] = max(costs[i-1]+table[i-1][j-weights[i-1]],table[i-1][j])        
       else:
         table[i][j]=table[i-1][j]
   selected_items=[]

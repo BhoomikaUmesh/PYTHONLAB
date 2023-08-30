@@ -1,15 +1,11 @@
 from collections import defaultdict
-
 class Graph:
-    def __init__ (self, subjects):
-        self.subjects = subjects
-        self.graph = defaultdict(list)
-    
-    def add_edge(self, subject1, subject2):
-        self.graph[subject1].append(subject2)
-        self.graph[subject2].append(subject1)
-
-    def graph_coloring(self):
+    def __init__(self, subjects):
+        self.subjects, self.graph = subjects, defaultdict(list)
+    def addedge(self, s1, s2):
+        self.graph[s1].append(s2)
+        self.graph[s2].append(s1)
+    def coloring(self):
         color_map={}
         available_colors = set(range(1, len(self.subjects)+1))
         for subject in self.subjects:
@@ -26,24 +22,18 @@ class Graph:
                 color_map[subject] = len(available_colors) + 1
                 available_colors.add(color_map[subject])
         return color_map
-
-    def get_minimum_time_slots(self):
-        color_map = self.graph_coloring()
-        return max(color_map.values())
-
-subjects = ['Math', 'Physics', 'Chemistry', 'Biology']
-students = {
-    'Math' : ['Alice', 'Bob', 'Charlie'],
-    'Physics' : ['Alice', 'Charlie', 'David'],
-    'Chemistry' : ['Bob', 'Charlie,' 'Eve'],
-    'Biology' : ['Alice', 'David', 'Eve']
-}
-
-graph = Graph(subjects)
-graph.add_edge('Math', 'Physics')
-graph.add_edge('Math', 'Chemistry')
-graph.add_edge('Physics', 'Chemistry')
-graph.add_edge('Physics', 'Biology')
-
-minimun_time_slots = graph.get_minimum_time_slots()
-print(f"Minimum time slots required: {minimun_time_slots}")
+    def timeslots(self):
+        return max(self.coloring().values())
+n = int(input("Enter the number of subjects: "))
+sub, stu= [], {}
+for i in range(n):
+    subject = input(f"Enter subject {i + 1}: ")
+    sub.append(subject)
+    n_st = int(input(f"Enter the number of students for {subject}: "))
+    st_list = [input(f"Enter student {j + 1} for {subject}: ") for j in range(n_st)]
+    stu[subject] = st_list
+g=Graph(sub)
+for _ in range(int(input("Enter the number of edges: "))):
+    e = input("Enter edge (subject1 subject2): ").split()
+    g.addedge(e[0], e[1])
+print(f"\nMinimum time slots needed: {g.timeslots()}")

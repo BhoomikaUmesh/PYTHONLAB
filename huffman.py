@@ -1,67 +1,60 @@
 import heapq
-class node:
-    def __init__(self, freq, symbol, left=None, right=None):
-        self.freq = freq
-        self.symbol = symbol
-        self.left = left
-        self.right = right
-        self.huff = ''
-    def __lt__(self, nxt):
-        return self.freq < nxt.freq
-def printNodes(node, val=''):
-    newVal = val + str(node.huff)
-    if node.left :
-        printNodes(node.left, newVal)
-    if(node.right):
-        printNodes(node.right,newVal)
-    if(not node.left and not node.right):
-        print(f"{node.symbol} -> {newVal}")
-chars = ['a', 'b', 'c', 'd', 'e', 'f']
-freq = [5, 9, 12, 13, 16, 45]
-nodes = []
-for x in range(len(chars)):
-    heapq.heappush(nodes, node(freq[x], chars[x]))
-while len(nodes) > 1:
-    left = heapq.heappop(nodes)
-    right = heapq.heappop(nodes)
-    left.huff = 0
-    right.huff = 1
-    newNode = node(left.freq+right.freq, left.symbol+right.symbol, left, right)
-    heapq.heappush(nodes, newNode)
-printNodes(nodes[0])
 
+class HuffmanNode:
+    def __init__(self, char, freq):
+        self.char, self.freq, self.left, self.right = char, freq, None, None
+        
+    def __lt__(self, other):
+        return self.freq < other.freq
 
-def decode_text(root, encoded_text):
-    decoded_text = ""
-    current_node = root
-    for bit in encoded_text:
-        if bit == "0":
-            current_node = current_node.left
-        else:
-            current_node = current_node.right
-        if current_node.left is None and current_node.right is None:
-            decoded_text += current_node.symbol
-            current_node = root
-    return decoded_text
-encoded_text = (input("enter the code:"))
-decoded_text = decode_text(nodes[0], encoded_text)
-print("Decoded text:", decoded_text)
+def build_huffman_tree(chars, freqs):
+    heap = [HuffmanNode(c, f) for c, f in zip(chars, freqs)]
+    heapq.heapify(heap)
+    
+    while len(heap) > 1:
+        left, right = heapq.heappop(heap), heapq.heappop(heap)
+        combined = HuffmanNode(None, left.freq + right.freq)
+        combined.left, combined.right = left, right
+        heapq.heappush(heap, combined)
+    
+    return heapq.heappop(heap)
 
+def build_huffman_codes(root, code='', codes={}):
+    if root:
+        if root.char:
+            codes[root.char] = code
+        build_huffman_codes(root.left, code + '0', codes)
+        build_huffman_codes(root.right, code + '1', codes)
 
-def encode_text(root, text):
-    huffman_codes = {}
-    def generate_codes(node, current_code=""):
-        if node is None:
-            return
-        if node.symbol:
-            huffman_codes[node.symbol] = current_code
-        generate_codes(node.left, current_code + "0")
-        generate_codes(node.right, current_code + "1")
-    generate_codes(root)
-    encoded_text = ""
-    for char in text:
-        encoded_text += huffman_codes[char]
-    return encoded_text
-text=input("Enter text:")
-encoded_text = encode_text(nodes[0], text)
-print("Encoded text:", encoded_text)
+def encode_decode_string(encoded, root):
+    decoded, current = '', root
+    for bit in encoded:
+        current = current.left if bit == '0' else current.right
+        if current.char:
+            decoded += current.char
+            current = root
+    return decoded
+
+def get_input(message, count, data_type):
+    return [data_type(input(f"{message} {i+1}: ")) for i in range(count)]
+
+n = int(input("Enter the number of characters: "))
+characters = get_input("Enter Character", n, str)
+frequencies = get_input("Enter Frequency of Character ", n, float)
+
+huffman_tree = build_huffman_tree(characters, frequencies)
+huffman_codes = {}
+build_huffman_codes(huffman_tree, '', huffman_codes)
+
+print("Huffman Codes:")
+for char, code in huffman_codes.items():
+    print(char, ":", code)
+
+string_to_encode = input("Enter a string to encode: ")
+encoded_string = ''.join(huffman_codes[char] for char in string_to_encode)
+print("Encoded String is:", encoded_string)
+
+encoded_string_to_decode = input("Enter the encoded string to decode: ")
+decoded_string = encode_decode_string(encoded_string_to_decode, huffman_tree)
+print("Decoded String is:", decoded_string)
+
